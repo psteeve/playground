@@ -1,0 +1,1 @@
+* Implementing an image slider with flotjs
