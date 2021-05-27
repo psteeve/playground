@@ -60,14 +60,15 @@ export class Bag {
     }
 
     /*
-     * Remove the value in the Bag if occurences is 0 otherwise decrement occurences.
+     * Remove the value in the Bag if occurences is 1 otherwise decrement occurences.
      * Or call ifAbsentCallBack function if the value is absent.
      * The default value is identity function for ifAbsentCallBack.
      */
     public remove(value: any, ifAbsentCallBack = (value: any) => value): any {
         if (this._map.has(value)) {
             const oldOccurences = this._map.get(value) as number;
-            if (oldOccurences === 0) {
+
+            if (oldOccurences === 1) {
                 this._map.delete(value);
                 this._size = 0;
                 return value;
