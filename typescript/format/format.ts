@@ -85,53 +85,41 @@ export class IterationDirective implements DirectiveNode {
     }
 }
 
+export class ConditionalExpressionDirective implements DirectiveNode {
 
-
-function formatter(controlString: string) {
-    const stream = ReadStream.on(controlString);
-    const directives = [];
-
-    while (!stream.atEnd()) {
-        const next = stream.next;
-        if (next === '~') {
-            const k = stream.next;
-            if (k === '~') {
-                directives.push({
-                    kind: '~'
-                });
-            }
-
-            if (k === 'a') {
-                directives.push({
-                    type: 'directive',
-                    value: 'a'
-                });
-            }
-
-            if (k === '{') {
-
-                directives.push({
-                    type: 'directives',
-                    value: '{'
-                });
-            }
-
-            if (k === '}') {
-                directives.push({
-                    type: 'directives',
-                    value: '}'
-                });
-            }
-        } else {
-            directives.push({
-                type: 'element',
-                value: next
-            });
-        }
-
+    constructor(public clauses: DirectiveNode[], public numericParemeter = 1,
+        public columnModifier: boolean, public atSignModifier: boolean) {
     }
 
-    return directives;
+    run(): string {
+        return '';
+    }
+}
+
+export class GoToDirective implements DirectiveNode {
+
+    constructor() {
+    }
+
+    run(): string {
+        return '';
+    }
+}
+
+
+export class RecursiveDirective implements DirectiveNode {
+
+    constructor() {
+    }
+
+    run(): string {
+        return '';
+    }
+}
+
+
+
+function formatter(_controlString: string) {
 }
 
 
