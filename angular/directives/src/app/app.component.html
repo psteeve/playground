@@ -1,3 +1,38 @@
-<input [(ngModel)]="title"/>
+<div [ngClass]="isSpecial ? 'special' : ''">This div is special</div>
 
-<p>{{title}}</p>
+<div [ngClass]="currentClasses">
+  This div is initialy saveable, unchanged, and special.
+</div>
+
+<label for="example-ngModel">[(ngModel)]</label>
+
+<textarea [(ngModel)]="currentItem.name" id="example-ngModel"></textarea>
+
+<p>{{ currentItem.name }}</p>
+
+<textarea
+  [ngModel]="currentItem.name"
+  id="example-ngModel"
+  (ngModelChange)="onModelChanges($event)"
+></textarea>
+
+<p>{{ currentItem.upperCaseName }}</p>
+
+<p [appHighlight]="color">Highlight me!</p>
+
+<h1>My First Attribute Directive</h1>
+<h2>Pick a highlight color</h2>
+
+<div>
+  <input type="radio" name="colors" (click)="color = 'lightgreen'" /> Green
+  <input type="radio" name="colors" (click)="color = 'yellow'" />Yellow
+  <input type="radio" name="colors" (click)="color = 'cyan'" />Cyan
+</div>
+
+<p [appHighlight]="color">Highlight me!</p>
+
+<p [appHighlight]="color" defaultColor="violet">Highlight me too!</p>
+
+<p ngNonBindable> {{1 + 1}}</p>
+
+<p> {{1 + 1}}</p>
