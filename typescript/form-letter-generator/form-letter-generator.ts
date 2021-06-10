@@ -1,4 +1,4 @@
-import { ReadStream } from 'flotjs';
+import { streamOn, peek, next } from 'flotjs';
 
 const validInput = [
     'a', 'b', 'c', 'd', 'e', 'f',
@@ -12,7 +12,7 @@ const validInput = [
 
 export function stInterpol(template: string, data: Record<string, any>): { text: string; errors: string[] } {
 
-    const stream = ReadStream.on(template);
+    const stream = streamOn(template);
 
     const output: string[] = [];
 
@@ -20,22 +20,22 @@ export function stInterpol(template: string, data: Record<string, any>): { text:
 
     const interpol = () => {
 
-        while (stream.peek !== '%' && !stream.atEnd()) {
-            output.push(stream.next);
+        while (peek(stream) !== '%' && !stream.atEnd()) {
+            output.push(next(stream));
         }
 
-        stream.next;
+        next(stream);
 
-        while (stream.peek === '%') {
-            output.push(stream.next);
+        while (peek(stream) === '%') {
+            output.push(next(stream));
         }
 
         if (stream.atEnd()) return;
 
         const property = [];
 
-        while (validInput.includes(stream.peek?.toLowerCase())) {
-            property.push(stream.next);
+        while (validInput.includes(peek(stream)?.toLowerCase())) {
+            property.push(next(stream));
         }
 
         // Test if i'ts a valid property name
