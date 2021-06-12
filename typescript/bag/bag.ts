@@ -1,85 +1,86 @@
-export class Bag {
-    private _map = new Map<any, number>();
-    private _size = 0;
+/*
+ * Include the argument, value, as an element of the Bag
+ * an occurrence number of times. Answer the argument, value.
+ */
 
-    /*
-     * Include the argument, value, as an element of the Bag
-     * an occurrence number of times. Answer the argument, value.
-     */
-    public addWithOccurrences(value: any, occurences = 1): any {
+export function addWithOccurrences(b: Bag, value: any, occurences = 1): any {
 
-        if (this._map.has(value)) {
+    if (b._map.has(value)) {
 
-            const oldOccurrences = this._map.get(value) as number;
+        const oldOccurrences = b._map.get(value) as number;
 
-            const n = oldOccurrences + occurences;
+        const n = oldOccurrences + occurences;
 
-            this._size = n;
+        b._size = n;
 
-            this._map.set(value, n);
-
-            return value;
-        }
-
-        this._size = this._size + occurences;
-
-        this._map.set(value, occurences);
+        b._map.set(value, n);
 
         return value;
     }
 
-    public forEach(f: (value: any) => void): void {
-        this._map.forEach((_, key) => {
-            const occurrences = this._map.get(key) as number;
+    b._size = b._size + occurences;
 
-            for (let i = 0; i < occurrences; i++) {
-                f(key);
-            }
-        });
-    }
+    b._map.set(value, occurences);
 
-    public add(value: any): any {
-        return this.addWithOccurrences(value);
+    return value;
+}
+
+export function add(b: Bag, value: any): any {
+    return addWithOccurrences(b, value);
+}
+
+export function occurrencesOf(b: Bag, value: any): number | undefined {
+    return b._map.get(value);
+}
+
+/*
+ * Remove the value in the Bag if occurences is 1 otherwise decrement occurences.
+ * Or call ifAbsentCallBack function if the value is absent.
+ * The default value is identity function for ifAbsentCallBack.
+ */
+export function remove(b: Bag, value: any, ifAbsentCallBack = (value: any) => value): any {
+    if (b._map.has(value)) {
+        const oldOccurences = b._map.get(value) as number;
+
+        if (oldOccurences === 1) {
+            b._map.delete(value);
+            b._size = 0;
+            return value;
+        }
+
+        b._map.set(value, oldOccurences - 1);
+        b._size = b._size - 1;
+
+        return value;
+
     }
+    return ifAbsentCallBack(value);
+}
+
+export function includes(b: Bag, value: any): boolean {
+    return b._map.has(value);
+}
+
+export function removeAll(b: Bag): void {
+    b._size = 0;
+    b._map.clear();
+}
+
+export function forEach(b: Bag, f: (value: any) => void): void {
+    b._map.forEach((_, key) => {
+        const occurrences = b._map.get(key) as number;
+
+        for (let i = 0; i < occurrences; i++) {
+            f(key);
+        }
+    });
+}
+
+export class Bag {
+    public _map = new Map<any, number>();
+    public _size = 0;
 
     public get size(): number {
         return this._size;
-    }
-
-    public occurrencesOf(value: any): number | undefined {
-        return this._map.get(value);
-    }
-
-    public includes(value: any): boolean {
-        return this._map.has(value);
-    }
-
-    public removeAll(): void {
-        this._size = 0;
-        this._map.clear();
-    }
-
-    /*
-     * Remove the value in the Bag if occurences is 1 otherwise decrement occurences.
-     * Or call ifAbsentCallBack function if the value is absent.
-     * The default value is identity function for ifAbsentCallBack.
-     */
-    public remove(value: any, ifAbsentCallBack = (value: any) => value): any {
-        if (this._map.has(value)) {
-            const oldOccurences = this._map.get(value) as number;
-
-            if (oldOccurences === 1) {
-                this._map.delete(value);
-                this._size = 0;
-                return value;
-            }
-
-            this._map.set(value, oldOccurences - 1);
-            this._size = this._size - 1;
-
-            return value;
-
-        }
-        return ifAbsentCallBack(value);
     }
 }
