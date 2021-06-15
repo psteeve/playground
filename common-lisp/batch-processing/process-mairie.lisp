@@ -1,0 +1,16 @@
+(defun parse-mairie (stream)
+  (let ((city (read-stream:up-to stream #\())
+        (code-postal (read-stream:up-to stream #\)))
+        maire)
+    (read-stream:up-to stream #\-)
+    (setf maire (read-stream:up-to-end stream))
+    (list :city (string-downcase (string-trim " " (coerce city 'string)))
+          :maire (string-trim " " (coerce maire 'string))
+          :code-postal (coerce code-postal 'string))))
+
+(defun process-mairie ()
+  (with-open-file (in "mairie.data")
+    (loop for (line no-nl-p)
+            = (multiple-value-list (read-line in nil nil))
+          while line
+          collect (parse-mairie (read-stream:read-stream-on line)))))
