@@ -38,7 +38,7 @@ export function occurrencesOf(b: Bag, value: unknown): number | undefined {
  * Or call ifAbsentCallBack function if the value is absent.
  * The default value is identity function for ifAbsentCallBack.
  */
-export function remove(b: Bag, value: unknown, ifAbsentCallBack = (value: unknown) => value): any {
+export function remove(b: Bag, value: unknown, ifAbsentCallBack = (value: unknown) => value): unknown {
     if (b._map.has(value)) {
         const oldOccurrences = b._map.get(value) as number;
 
