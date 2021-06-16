@@ -3,7 +3,7 @@
  * an occurrence number of times. Answer the argument, value.
  */
 
-export function addWithOccurrences(b: Bag, value: any, occurrences = 1): any {
+export function addWithOccurrences(b: Bag, value: unknown, occurrences = 1): unknown {
 
     if (b._map.has(value)) {
 
@@ -25,11 +25,11 @@ export function addWithOccurrences(b: Bag, value: any, occurrences = 1): any {
     return value;
 }
 
-export function add(b: Bag, value: any): any {
+export function add(b: Bag, value: unknown): unknown {
     return addWithOccurrences(b, value);
 }
 
-export function occurrencesOf(b: Bag, value: any): number | undefined {
+export function occurrencesOf(b: Bag, value: unknown): number | undefined {
     return b._map.get(value);
 }
 
@@ -38,7 +38,7 @@ export function occurrencesOf(b: Bag, value: any): number | undefined {
  * Or call ifAbsentCallBack function if the value is absent.
  * The default value is identity function for ifAbsentCallBack.
  */
-export function remove(b: Bag, value: any, ifAbsentCallBack = (value: any) => value): any {
+export function remove(b: Bag, value: unknown, ifAbsentCallBack = (value: unknown) => value): any {
     if (b._map.has(value)) {
         const oldOccurrences = b._map.get(value) as number;
 
@@ -57,7 +57,7 @@ export function remove(b: Bag, value: any, ifAbsentCallBack = (value: any) => va
     return ifAbsentCallBack(value);
 }
 
-export function includes(b: Bag, value: any): boolean {
+export function includes(b: Bag, value: unknown): boolean {
     return b._map.has(value);
 }
 
@@ -66,7 +66,7 @@ export function removeAll(b: Bag): void {
     b._map.clear();
 }
 
-export function forEach(b: Bag, f: (value: any) => void): void {
+export function forEach(b: Bag, f: (value: unknown) => void): void {
     b._map.forEach((_, key) => {
         const occurrences = b._map.get(key) as number;
 
@@ -77,7 +77,7 @@ export function forEach(b: Bag, f: (value: any) => void): void {
 }
 
 export class Bag {
-    public _map = new Map<any, number>();
+    public _map = new Map<unknown, number>();
     public _size = 0;
 
     public get size(): number {
