@@ -1,25 +1,9 @@
-import { format } from './format-with';
 import { createReadStream, writeFileSync } from 'fs';
 import { normalize } from 'path';
 import { createInterface, Interface } from 'readline';
-import { PositionableStream, upTo, upToEnd } from 'flotjs';
+import { streamOn, upTo, upToEnd } from 'flotjs';
 
-function getCity(stream: PositionableStream): any {
-    const value = upTo(stream, '(');
-
-    return (value as string).trim();
-}
-
-function getCodePostal(stream: PositionableStream): any {
-    return upTo(stream, ')');
-}
-
-function getNameMaire(stream: PositionableStream): any {
-    upTo(stream, '-');
-    const value = upToEnd(stream)
-    return (value as string).trim();
-}
-
+import { stInterpol } from 'form-letter-generator';
 
 const outname = `out-${Date.now()}.json`;
 
@@ -37,15 +21,30 @@ const rl: Interface = createInterface({
 const datas: Record<string, unknown>[] = [];
 
 rl.on('line', line => {
-    datas.push(format(line, {
-        ville: getCity,
-        maire: getNameMaire,
-        codePostal: getCodePostal
-    }));
+
+    const stream = streamOn(line);
+
+    const city = (upTo(stream, '(') as string).trim();
+
+    const codePostal = upTo(stream, ')');
+
+    upTo(stream, '-');
+
+    const maire = (upToEnd(stream) as string).trim();
+
+    datas.push({
+        city,
+        maire,
+        codePostal
+    });
 });
 
+const template = `ville : %city maire: %maire codePostal: %codePostal`;
+
 rl.on('close', () => {
-    writeFileSync(`./${outname}`, JSON.stringify(datas));
+    const data = datas.map(data => stInterpol(template, data).text).join('\n');
+    writeFileSync(`./${outname}`, data);
+    //    writeFileSync(`./${outname}`, JSON.stringify(datas));
     // tslint:disable-next-line:no-console
     console.log(`Formating ${filename} to ${outname}`);
 })
