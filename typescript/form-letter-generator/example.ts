@@ -1,7 +1,7 @@
 import { stInterpol } from './form-letter-generator';
 
 
-const template = `%firstName %lastName %age`;
+const template = `(:first-name %firstName :last-name "%lastName" :age %age)`;
 
 const data = {
     firstName: 'paul',
@@ -11,5 +11,4 @@ const data = {
 };
 
 
-
-console.log(stInterpol(template, data));
+console.log(stInterpol(template, data).text);
