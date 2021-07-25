@@ -42,9 +42,10 @@ rl.on('line', line => {
 const template = `ville : %city maire: %maire codePostal: %codePostal`;
 
 rl.on('close', () => {
-    const data = datas.map(data => stInterpol(template, data).text).join('\n');
-    writeFileSync(`./${outname}`, data);
-    //    writeFileSync(`./${outname}`, JSON.stringify(datas));
+    console.log(datas);
+    //const data = datas.map(data => stInterpol(template, data).text).join('\n');
+    //writeFileSync(`./${outname}`, data);
+     writeFileSync(`./${outname}`, JSON.stringify(datas));
     // tslint:disable-next-line:no-console
     console.log(`Formating ${filename} to ${outname}`);
 })
