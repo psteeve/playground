@@ -19,11 +19,11 @@ console.log(stInterpol(template, data).text);
 const s = streamOn(":nom paul :prenom steevenson :naissance 21/01/1989");
 
 function processKeywordFormat(stream: ReadStream) {
-    const recur: (result: any[], isAtEnd: boolean) => any[] = (result: any[], isAtEnd: boolean) => {
+    const recur: (result: string[], isAtEnd: boolean) => string[] = (result: string[], isAtEnd: boolean) => {
         if (isAtEnd) {
             return result;
         } else {
-            result.push(upTo(stream, ":"));
+            result.push(upTo(stream, ":") as string);
             return recur(result, s.atEnd());
         }
     }
@@ -36,3 +36,23 @@ type Enfant = {
     prenom: string;
     naissance: string;
 }
+
+function parseEnfant(stream: ReadStream): Record<string, string> {
+    return processKeywordFormat(stream)
+        .filter(value => value !== '')
+        .map(value => {
+            const splited = value.split(' ');
+            return {
+                [splited[0]] : splited[1]
+            };
+        })
+        .reduce((acc: Record<string, string>, object: Record<string, string>) => {
+            Object.keys(object)
+                .forEach(key => {
+                    acc[key] = object[key];
+                });
+            return acc;
+        }, {} as Record<string, string>);
+}
+
+console.log(parseEnfant(s));
