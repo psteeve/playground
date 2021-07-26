@@ -18,7 +18,7 @@ console.log(stInterpol(template, data).text);
 
 const s = streamOn(":nom paul :prenom steevenson :naissance 21/01/1989");
 
-function processKeywordFormat(stream: ReadStream) {
+function processKeywordFormat(stream: ReadStream): string[] {
     const recur: (result: string[], isAtEnd: boolean) => string[] = (result: string[], isAtEnd: boolean) => {
         if (isAtEnd) {
             return result;
