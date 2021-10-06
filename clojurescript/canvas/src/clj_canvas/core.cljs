@@ -1,6 +1,0 @@
-(ns clj-canvas.core)
-
-
-
-
-
